@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateQuestion from "./components/CreateQuestion";
+import CreateExam from "./components/CreateExam";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class App extends React.Component {
       user: {
         userId: null,
         role: "students",
-        token: null
+        //token: null,
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw"
       }
     }
   }
@@ -56,6 +58,15 @@ export default class App extends React.Component {
             exact
             render={routerProps => (
               <CreateQuestion {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+              />
+            )}
+          />
+          <Route
+            path="/createExams"
+            exact
+            render={routerProps => (
+              <CreateExam {...routerProps}
                 domain={this.state.domain} user={this.state.user}
               />
             )}
