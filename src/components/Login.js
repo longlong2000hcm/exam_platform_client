@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 
 export default class Login extends Component {
     constructor(props) {
@@ -7,7 +7,7 @@ export default class Login extends Component {
         this.state = {
             username: "",
             password: "",
-
+            redirect: false
         }
     }
     usernameChangeHandler = (e) => {
@@ -31,16 +31,21 @@ export default class Login extends Component {
                 .then(result => {
                     this.props.userIdChangeHandler(result.user.id);
                     this.props.tokenChangeHandler(result.token);
+                    this.setState({redirect: true})
                 })
                 .catch(err => console.log(err));
         }
         console.log(this.props.user);
+        
     }
     goToRegister = (event) => {
         event.preventDefault();
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to="/createQuestions"></Redirect>
+        }
         return (
             <>
                 <h2>Login</h2>

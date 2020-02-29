@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import CreateQuestion from "./components/CreateQuestion";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,6 +48,15 @@ export default class App extends React.Component {
               <Register {...routerProps}
                 domain={this.state.domain} user={this.state.user}
                 roleChangeHandler={this.roleChangeHandler}
+              />
+            )}
+          />
+          <Route
+            path="/createQuestions"
+            exact
+            render={routerProps => (
+              <CreateQuestion {...routerProps}
+                domain={this.state.domain} user={this.state.user}
               />
             )}
           />
