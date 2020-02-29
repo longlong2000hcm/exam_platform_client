@@ -4,6 +4,9 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateQuestion from "./components/CreateQuestion";
 import CreateExam from "./components/CreateExam";
+import TeacherMenu from "./components/TeacherMenu";
+import StudentMenu from "./components/StudentMenu";
+import TakeExam from "./components/TakeExam";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,11 +14,45 @@ export default class App extends React.Component {
     this.state = {
       domain: "http://localhost:4000",
       user: {
-        userId: null,
+        // userId: null,
+        // role: "students",
+        // token: "",
+        //token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw",
+        userId: 4,
         role: "students",
-        //token: null,
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw"
-      }
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwid…UzNX0.cHMQHhu1On4yE8g5IUqT8R_fPjlun_QaGe-_9RlCOuw"
+      },
+      landingPage: routerProps => (
+        <Login {...routerProps}
+          domain={this.state.domain} user={this.state.user}
+          userIdChangeHandler={this.userIdChangeHandler}
+          tokenChangeHandler={this.tokenChangeHandler}
+          roleChangeHandler={this.roleChangeHandler}
+        />
+      ),
+      currentRoute: "students"
+    }
+  }
+  componentDidUpdate() {
+    if (this.state.user.token.length > 0 && this.state.user.role === "teachers" && this.state.currentRoute !== "teachers") {
+      this.setState({
+        currentRoute: "teachers",
+        landingPage: routerProps => (
+          <TeacherMenu {...routerProps}
+            domain={this.state.domain} user={this.state.user}
+          />
+        )
+      })
+    }
+    if (this.state.user.token.length > 0 && this.state.user.role === "students" && this.state.currentRoute !== "students") {
+      this.setState({
+        currentRoute: "students",
+        landingPage: routerProps => (
+          <StudentMenu {...routerProps}
+            domain={this.state.domain} user={this.state.user}
+          />
+        )
+      })
     }
   }
   userIdChangeHandler = (userId) => {
@@ -34,14 +71,7 @@ export default class App extends React.Component {
           <Route
             path="/"
             exact
-            render={routerProps => (
-              <Login {...routerProps}
-                domain={this.state.domain} user={this.state.user}
-                userIdChangeHandler={this.userIdChangeHandler}
-                tokenChangeHandler={this.tokenChangeHandler}
-                roleChangeHandler={this.roleChangeHandler}
-              />
-            )}
+            render={this.state.landingPage}
           />
           <Route
             path="/register"
@@ -67,6 +97,15 @@ export default class App extends React.Component {
             exact
             render={routerProps => (
               <CreateExam {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+              />
+            )}
+          />
+          <Route
+            path="/takeExam"
+            exact
+            render={routerProps => (
+              <TakeExam {...routerProps}
                 domain={this.state.domain} user={this.state.user}
               />
             )}

@@ -44,7 +44,7 @@ export default class Login extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to="/createExams"></Redirect>
+            return <Redirect to="/"></Redirect>
         }
         return (
             <>
