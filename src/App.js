@@ -10,37 +10,48 @@ export default class App extends React.Component {
       domain: "http://localhost:4000",
       user: {
         userId: null,
-        username: null,
+        role: "students",
         token: null
       }
     }
   }
   userIdChangeHandler = (userId) => {
-    this.setState({user:{ ...this.state.user, userId: userId}})
+    this.setState({ user: { ...this.state.user, userId: userId } })
   }
   tokenChangeHandler = (token) => {
-    this.setState({user:{ ...this.state.user, token: token}})
+    this.setState({ user: { ...this.state.user, token: token } })
+  }
+  roleChangeHandler = (e) => {
+    this.setState({ user: { ...this.state.user, role: e.target.value } })
   }
   render() {
     return (
-     <>
-     <Router>
+      <>
+        <Router>
           <Route
             path="/"
             exact
             render={routerProps => (
-              <Login {...routerProps} domain={this.state.domain} user={this.state.user} />
+              <Login {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+                userIdChangeHandler={this.userIdChangeHandler}
+                tokenChangeHandler={this.tokenChangeHandler}
+                roleChangeHandler={this.roleChangeHandler}
+              />
             )}
           />
-           <Route
+          <Route
             path="/register"
             exact
             render={routerProps => (
-              <Register {...routerProps} domain={this.state.domain} user={this.state.user} />
+              <Register {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+                roleChangeHandler={this.roleChangeHandler}
+              />
             )}
           />
-          </Router>
-     </>
+        </Router>
+      </>
     )
   }
 }

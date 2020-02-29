@@ -7,7 +7,6 @@ export default class Register extends Component {
         this.state = {
             username: "",
             password: "",
-            role: "students"
         }
     }
     usernameChangeHandler = (e) => {
@@ -16,33 +15,24 @@ export default class Register extends Component {
     passwordChangeHandler = (e) => {
         this.setState({ password: e.target.value })
     }
-    roleChangeHandler = (e) => {
-        this.setState({ role: e.target.value })
-    }
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
         if (this.state.username.length > 0 && this.state.password.length > 0) {
-            fetch(`${this.props.domain}/${this.state.role}`)
+            await fetch(`${this.props.domain}/${this.props.user.role}`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: this.state.username, password: this.state.password })
+            })
                 .then(res => res.json())
-                .then(
-                    (result) => {
-                        this.setState({
-                            isLoaded: true,
-                            items: result.items
-                        });
-                    },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
-                    // (error) => {
-                    //     this.setState({
-                    //         isLoaded: true,
-                    //         error
-                    //     });
-                    // }
-                )
+                .then(result => {
+                    console.log(result);
+                })
+                .catch(err => console.log(err));
         }
-
+        console.log(this.props.user);
     }
 
     render() {
@@ -57,7 +47,7 @@ export default class Register extends Component {
                     <input type="text" value={this.state.password} onChange={this.passwordChangeHandler} />
                     <br />
                     <label>Your role: </label>
-                    <select defaultValue="student" onChange={this.roleChangeHandler}>
+                    <select defaultValue="students" onChange={this.props.roleChangeHandler}>
                         <option value="students">student</option>
                         <option value="teachers">teacher</option>
                     </select>
