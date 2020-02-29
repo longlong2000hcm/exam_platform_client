@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import history from './components/history';
 import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateQuestion from "./components/CreateQuestion";
@@ -7,6 +8,8 @@ import CreateExam from "./components/CreateExam";
 import TeacherMenu from "./components/TeacherMenu";
 import StudentMenu from "./components/StudentMenu";
 import TakeExam from "./components/TakeExam";
+import AvailableExams from "./components/AvailableExams";
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,13 +17,14 @@ export default class App extends React.Component {
     this.state = {
       domain: "http://localhost:4000",
       user: {
-        // userId: null,
-        // role: "students",
-        // token: "",
-        //token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw",
-        userId: 4,
+        userId: null,
         role: "students",
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwid…UzNX0.cHMQHhu1On4yE8g5IUqT8R_fPjlun_QaGe-_9RlCOuw"
+        token: "",
+        //token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw",
+        // userId: 4,
+        // role: "students",
+        // token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwid…UzNX0.cHMQHhu1On4yE8g5IUqT8R_fPjlun_QaGe-_9RlCOuw",
+        examTaking: null
       },
       landingPage: routerProps => (
         <Login {...routerProps}
@@ -30,7 +34,7 @@ export default class App extends React.Component {
           roleChangeHandler={this.roleChangeHandler}
         />
       ),
-      currentRoute: "students"
+      currentRoute: ""
     }
   }
   componentDidUpdate() {
@@ -63,6 +67,10 @@ export default class App extends React.Component {
   }
   roleChangeHandler = (e) => {
     this.setState({ user: { ...this.state.user, role: e.target.value } })
+  }
+  examTakingHandler = (examId) => {
+    this.setState({ ...this.state.user, examTaking: examId })
+    return <Redirect to="/takeExam"></Redirect>
   }
   render() {
     return (
@@ -107,6 +115,17 @@ export default class App extends React.Component {
             render={routerProps => (
               <TakeExam {...routerProps}
                 domain={this.state.domain} user={this.state.user}
+                examTaking={this.state.user.examTaking}
+              />
+            )}
+          />
+          <Route
+            path="/availableExams"
+            exact
+            render={routerProps => (
+              <AvailableExams {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+                examTakingHandler={this.examTakingHandler}
               />
             )}
           />

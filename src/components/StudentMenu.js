@@ -12,7 +12,7 @@ export default class TeacherMenu extends Component {
         return (
             <>
             <h2>Student's menu</h2>
-            <Link to="/takeExam"><button>Create questions</button></Link>
+            <Link to="/availableExams"><button>Available exams</button></Link>
             </>
         )
     }
