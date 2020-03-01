@@ -11,6 +11,7 @@ import TakeExam from "./components/TakeExam";
 import AvailableExams from "./components/AvailableExams";
 import ResultExam from "./components/ResultExam";
 import CompletedExams from "./components/CompletedExams"
+import SchoolResults from "./components/SchoolResults";
 
 
 export default class App extends React.Component {
@@ -140,6 +141,7 @@ export default class App extends React.Component {
               />
             )}
           />
+
         <Route
             path="/completedExams"
             exact
@@ -149,6 +151,17 @@ export default class App extends React.Component {
               />
             )}
           />
+
+        <Route
+            path="/schoolResults"
+            exact
+            render={routerProps => (
+              <SchoolResults {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+              />
+            )}
+          />
+
         </Router>
       </>
     )
