@@ -23,7 +23,7 @@ export default class App extends React.Component {
       domain: "http://localhost:4000",
       user: {
         userId: null,
-        role: "students",
+        role: "",
         token: "",
         //token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw",
         // userId: 4,
@@ -43,6 +43,7 @@ export default class App extends React.Component {
     }
   }
   componentDidUpdate() {
+    console.log(this.state.user)
     if (this.state.user.token.length > 0 && this.state.user.role === "teachers" && this.state.currentRoute !== "teachers") {
       this.setState({
         currentRoute: "teachers",
@@ -70,8 +71,8 @@ export default class App extends React.Component {
   tokenChangeHandler = (token) => {
     this.setState({ user: { ...this.state.user, token: token } })
   }
-  roleChangeHandler = (e) => {
-    this.setState({ user: { ...this.state.user, role: e.target.value } })
+  roleChangeHandler = (role) => {
+    this.setState({ user: { ...this.state.user, role: role } })
   }
   examTakingHandler = (examId) => {
     this.setState({ ...this.state.user, examTaking: examId })

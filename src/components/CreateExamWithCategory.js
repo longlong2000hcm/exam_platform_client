@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 export default class createExamWithCategory extends Component {
     constructor(props) {
@@ -118,6 +118,10 @@ export default class createExamWithCategory extends Component {
     }
 
     render() {
+        if (this.props.user.role!=="teachers") {
+            alert("Forbidden")
+            return <Redirect to="/"/>
+        } else
         if (this.state.error) {
             return <div>Error happened</div>;
         } else if (!this.state.isLoaded) {

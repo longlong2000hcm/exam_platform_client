@@ -127,7 +127,7 @@ export default class CreateExam extends Component {
     }
 
     render() {
-        if (this.props.user.role!=="students") {
+        if (this.props.user.role!=="teachers") {
             alert("Forbidden")
             return <Redirect to="/"/>
         } else

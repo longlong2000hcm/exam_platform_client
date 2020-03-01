@@ -15,7 +15,6 @@ export default class TakeExam extends Component {
         }
     }
     componentDidMount() {
-        console.log("Exam id: ", this.props.location.state.examId)
         fetch(`${this.props.domain}/students/getExam`, {
             method: 'POST',
             mode: 'cors',
@@ -81,46 +80,50 @@ export default class TakeExam extends Component {
             .then(result => {
                 console.log(result);
                 alert("Exam submit complete");
-                this.setState({examReturned: true, examResult: result.results[0]})
+                this.setState({ examReturned: true, examResult: result.results[0] })
             })
             .catch(err => console.log(err));
     }
 
     render() {
-        if (this.state.error) {
-            return <div>Error happened</div>;
-        } else if (!this.state.isLoaded) {
-            return <h5>Loading...</h5>;
-        } else if (this.state.examReturned) {
-            return <Redirect to={{
-                pathname: '/resultExam',
-                result: this.state.examResult 
-            }} />
-        }
-        else {
-            return (
-                <>
-                    <h1>Exam id: {this.state.examId}</h1>
-                    <form onSubmit={this.handleSubmit} ref={this.state.form}>
-                        {
-                            this.state.questionList.map((item, index) =>
-                                <div key={index}>
-                                    <h3>{item.question}</h3>
-                                    {item.answerOptions.map((answer, i) =>
-                                        <div key={i}>
-                                            <input type="radio" name={item.questionId}
+        if (this.props.user.role !== "students") {
+            alert("Forbidden")
+            return <Redirect to="/" />
+        } else
+            if (this.state.error) {
+                return <div>Error happened</div>;
+            } else if (!this.state.isLoaded) {
+                return <h5>Loading...</h5>;
+            } else if (this.state.examReturned) {
+                return <Redirect to={{
+                    pathname: '/resultExam',
+                    result: this.state.examResult
+                }} />
+            }
+            else {
+                return (
+                    <>
+                        <h1>Exam id: {this.state.examId}</h1>
+                        <form onSubmit={this.handleSubmit} ref={this.state.form}>
+                            {
+                                this.state.questionList.map((item, index) =>
+                                    <div key={index}>
+                                        <h3>{item.question}</h3>
+                                        {item.answerOptions.map((answer, i) =>
+                                            <div key={i}>
+                                                <input type="radio" name={item.questionId}
 
-                                                onChange={event => { this.handleRadioChange(event, item.questionId, answer.answerNo) }} />
-                                            {answer.answer}
-                                        </div>
-                                    )}
-                                </div>
-                            )
-                        }
-                        <input type="submit" value="Submit exam"></input>
-                    </form>
-                </>
-            )
-        }
+                                                    onChange={event => { this.handleRadioChange(event, item.questionId, answer.answerNo) }} />
+                                                {answer.answer}
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            }
+                            <input type="submit" value="Submit exam"></input>
+                        </form>
+                    </>
+                )
+            }
     }
 }

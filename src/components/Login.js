@@ -7,6 +7,7 @@ export default class Login extends Component {
         this.state = {
             username: "",
             password: "",
+            role: "students",
             redirect: false
         }
     }
@@ -15,6 +16,9 @@ export default class Login extends Component {
     }
     passwordChangeHandler = (e) => {
         this.setState({ password: e.target.value })
+    }
+    roleChangeHandler = (e) => {
+        this.setState({ role: e.target.value })
     }
     handleSubmit = async (event) => {
         event.preventDefault();
@@ -31,7 +35,8 @@ export default class Login extends Component {
                 .then(result => {
                     this.props.userIdChangeHandler(result.user.id);
                     this.props.tokenChangeHandler(result.token);
-                    this.setState({redirect: true})
+                    this.props.roleChangeHandler(this.state.role);
+                    this.setState({redirect: true});
                 })
                 .catch(err => console.log(err));
         }
@@ -57,12 +62,12 @@ export default class Login extends Component {
                     <input type="text" value={this.state.password} onChange={this.passwordChangeHandler} />
                     <br />
                     <label>Your role: </label>
-                    <select defaultValue="students" onChange={this.props.roleChangeHandler}>
+                    <select value={this.state.role} onChange={this.roleChangeHandler}>
                         <option value="students">student</option>
                         <option value="teachers">teacher</option>
                     </select>
                     <br/>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Login" />
                     <br/>
                     <div>Not registerd? Go to register!</div>
                     <Link to="/register"><button>Register</button></Link>
