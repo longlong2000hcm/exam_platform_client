@@ -62,6 +62,9 @@ export default class CreateQuestion extends Component {
                     })
                     .catch(err => console.log(err));
             }
+            else {
+                alert("Some fields are not filled correctly")
+            }
     }
     render() {
         return (

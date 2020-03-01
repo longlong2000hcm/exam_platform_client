@@ -103,7 +103,9 @@ export default class CreateExam extends Component {
                 })
                 .catch(err => console.log(err));
         }
-        console.log(examObject);
+        else {
+            alert("Some fields are not filled correctly")
+        }
     }
 
     getStudentsList = (event) => {
@@ -170,8 +172,6 @@ export default class CreateExam extends Component {
                             )}
                         </tbody>
                     </table>
-
-
                 </>
             )
         }
