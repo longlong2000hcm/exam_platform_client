@@ -12,9 +12,10 @@ export default class TeacherMenu extends Component {
         return (
             <>
             <h2>Teacher's menu</h2>
-            <Link to="/createQuestions"><button>Create questions</button></Link>
-            <Link to="/createExams"><button>Create exams</button></Link>
-            <Link to="/schoolResults"><button>School results</button></Link>
+            <Link to="/createQuestions"><button>Create questions</button></Link><br/>
+            <Link to="/createExams"><button>Create exams</button></Link><br/>
+            <Link to="/createExamsWithCategory"><button>Create exams with category</button></Link><br/>
+            <Link to="/schoolResults"><button>School results</button></Link><br/>
             </>
         )
     }

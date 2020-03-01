@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-export default class CreateExam extends Component {
+export default class createExamWithCategory extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,15 +9,15 @@ export default class CreateExam extends Component {
             isLoaded: false,
             name: "",
             target: "",
-            questionsArray: null,
-            selectedQuestionArray: [],
-            value: [],
+            category: "",
+            numberOfQuestions: 0,
+            questionCategories: [],
             studentList: null
         };
     }
 
     componentDidMount() {
-        fetch(`${this.props.domain}/teachers/getQuestions`, {
+        fetch(`${this.props.domain}/teachers/questionCategories`, {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -30,7 +30,7 @@ export default class CreateExam extends Component {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        questionsArray: result.rows
+                        questionCategories: result.rows
                     });
                     console.log(result.rows)
                 },
@@ -43,30 +43,9 @@ export default class CreateExam extends Component {
             )
     }
 
-    componentDidUpdate() {
-        console.log(this.state.selectedQuestionArray);
-    }
-
-    toggleQuestionSelect = (event, index) => {
-        let value = this.state.value;
-        value[index] = event.target.checked;
-        let selected = this.state.selectedQuestionArray;
-        if (event.target.checked) {
-            selected.push(parseInt(event.target.name));
-        } else {
-            selected.splice(selected.findIndex(k => k === event.target.name), 1);
-        }
-        this.setState({ value, selectedQuestionArray: selected });
-    }
-
-    nameChangeHandler = (event) => {
+    inputChangeHandler = (event) => {
         event.preventDefault();
-        this.setState({ name: event.target.value })
-    }
-
-    targetChangeHandler = (event) => {
-        event.preventDefault();
-        this.setState({ target: event.target.value })
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     submitHandler = async (event) => {
@@ -74,14 +53,16 @@ export default class CreateExam extends Component {
         let examObject = {
             "teacherId": this.props.user.userId,
             "name": this.state.name,
-            "questionsList": this.state.selectedQuestionArray,
+            "category": this.state.category,
+            "numberOfQuestions": this.state.numberOfQuestions,
             "target": this.state.target
         }
         if (examObject.name.length > 0
             && examObject.target.length > 0
             && (examObject.target === "all" || typeof parseInt(examObject.target) === "number")
-            && examObject.questionsList.length > 0) {
-            await fetch(`${this.props.domain}/teachers/createExam`, {
+            && examObject.category.length > 0
+            && examObject.numberOfQuestions > 0) {
+            await fetch(`${this.props.domain}/teachers/createExamWithCategory`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -93,15 +74,25 @@ export default class CreateExam extends Component {
                 .then(res => res.json())
                 .then(result => {
                     console.log(result);
-                    alert("Exam created");
-                    this.setState({
-                        name: "",
-                        target: "",
-                        selectedQuestionArray: [],
-                        value: []
-                    })
+                    if (result.code === 1) {
+                        alert("Exam created");
+                        this.setState({
+                            name: "",
+                            target: "",
+                            category: "",
+                            numberOfQuestions: 0,
+                        })
+                    } else if (result.code===0 && result.err==="Number of questions selected is greater than number of questions in the database") {
+                        alert(result.err);
+                    }
+                    else {
+                        alert("Something went wrong")
+                    }
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    console.log(err);
+                    alert("Something went wrong");
+                });
         }
         else {
             alert("Some fields are not filled correctly")
@@ -127,10 +118,6 @@ export default class CreateExam extends Component {
     }
 
     render() {
-        if (this.props.user.role!=="students") {
-            alert("Forbidden")
-            return <Redirect to="/"/>
-        } else
         if (this.state.error) {
             return <div>Error happened</div>;
         } else if (!this.state.isLoaded) {
@@ -139,24 +126,20 @@ export default class CreateExam extends Component {
             return (
                 <>
                     <Link to="/"><button>Back to menu</button></Link><br />
-                    <h2>Create Exam</h2>
+                    <h2>Create Exam with category</h2>
                     <form onSubmit={this.submitHandler}>
-                        <div>Exam name: <input type="text" value={this.state.name} onChange={this.nameChangeHandler}></input></div>
+                        <div>Exam name: <input type="text" name="name" value={this.state.name} onChange={this.inputChangeHandler}></input></div>
                         <hr />
-                        <div>Target: <input type="text" value={this.state.target} onChange={this.targetChangeHandler}></input></div>
+                        <div>Category:
+                        <select name="category" defaultValue={this.state.questionCategories[0]} value={this.state.category} onChange={this.inputChangeHandler}>
+                                {this.state.questionCategories.map((e, index) => <option value={e} key={index}>{e}</option>)}
+                            </select>
+                        </div>
+                        <hr />
+                        <div>Number of questions: <input type="number" name="numberOfQuestions" value={this.state.numberOfQuestions} onChange={this.inputChangeHandler}></input></div>
+                        <hr />
+                        <div>Target: <input type="text" name="target" value={this.state.target} onChange={this.inputChangeHandler}></input></div>
                         <small>Target can only be "all" or a student's id</small>
-                        <hr />
-                        {this.state.questionsArray.map((e, index) =>
-                            <div key={index}>
-                                <input
-                                    name={e.id}
-                                    type="checkbox"
-                                    checked={this.state.value[index]}
-                                    onChange={event => { this.toggleQuestionSelect(event, index) }}
-                                />
-                                <span>Category: {e.category} | Question: {e.question}</span>
-                            </div>
-                        )}
                         <hr />
                         <button type="submit">Create exam</button>
                     </form>

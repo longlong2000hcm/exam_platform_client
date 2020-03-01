@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect  } from 'react-router-dom';
 
 export default class AvailableExams extends Component {
     constructor(props) {
@@ -39,7 +39,10 @@ export default class AvailableExams extends Component {
     }
 
     render() {
-        if (this.state.error) {
+        if (this.props.user.role!=="students") {
+            alert("Forbidden")
+            return <Redirect to="/"/>
+        } else if (this.state.error) {
             return <div>Error happened</div>;
         } else if (!this.state.isLoaded) {
             return <h5>Loading...</h5>;

@@ -13,6 +13,7 @@ import ResultExam from "./components/ResultExam";
 import CompletedExams from "./components/CompletedExams"
 import SchoolResults from "./components/SchoolResults";
 import IndividualResults from "./components/IndividualResults"
+import CreateExamWithCategory from "./components/CreateExamWithCategory"
 
 
 export default class App extends React.Component {
@@ -85,6 +86,7 @@ export default class App extends React.Component {
             exact
             render={this.state.landingPage}
           />
+
           <Route
             path="/register"
             exact
@@ -95,6 +97,7 @@ export default class App extends React.Component {
               />
             )}
           />
+
           <Route
             path="/createQuestions"
             exact
@@ -104,6 +107,7 @@ export default class App extends React.Component {
               />
             )}
           />
+
           <Route
             path="/createExams"
             exact
@@ -113,6 +117,17 @@ export default class App extends React.Component {
               />
             )}
           />
+
+          <Route
+            path="/createExamsWithCategory"
+            exact
+            render={routerProps => (
+              <CreateExamWithCategory {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+              />
+            )}
+          />
+
           <Route
             path="/takeExam"
             exact
@@ -123,6 +138,7 @@ export default class App extends React.Component {
               />
             )}
           />
+
           <Route
             path="/availableExams"
             exact
@@ -133,6 +149,7 @@ export default class App extends React.Component {
               />
             )}
           />
+
           <Route
             path="/resultExam"
             exact
