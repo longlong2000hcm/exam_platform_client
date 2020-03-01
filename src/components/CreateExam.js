@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default class CreateExam extends Component {
     constructor(props) {
@@ -11,7 +11,8 @@ export default class CreateExam extends Component {
             target: "",
             questionsArray: null,
             selectedQuestionArray: [],
-            value: []
+            value: [],
+            studentList: null
         };
     }
 
@@ -105,6 +106,24 @@ export default class CreateExam extends Component {
         console.log(examObject);
     }
 
+    getStudentsList = (event) => {
+        event.preventDefault();
+        fetch(`${this.props.domain}/students`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + this.props.user.token
+            },
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result);
+                this.setState({ studentList: result.rows })
+            })
+            .catch(err => console.log(err));
+    }
+
     render() {
         if (this.state.error) {
             return <div>Error happened</div>;
@@ -113,7 +132,7 @@ export default class CreateExam extends Component {
         } else {
             return (
                 <>
-                    <Link to="/"><button>Back to menu</button></Link><br/>
+                    <Link to="/"><button>Back to menu</button></Link><br />
                     <h2>Create Exam</h2>
                     <form onSubmit={this.submitHandler}>
                         <div>Exam name: <input type="text" value={this.state.name} onChange={this.nameChangeHandler}></input></div>
@@ -135,6 +154,24 @@ export default class CreateExam extends Component {
                         <hr />
                         <button type="submit">Create exam</button>
                     </form>
+                    <br />
+                    <hr></hr>
+                    {this.state.studentList === null ? <button onClick={this.getStudentsList}>Get students list</button> : null}
+                    <table>
+                        <thead>
+                            {this.state.studentList === null ? null : <tr><th>Student id</th><th>Student username</th></tr>}
+                        </thead>
+                        <tbody>
+                            {this.state.studentList === null ? null : this.state.studentList.map((e, index) =>
+                                <tr key={index}>
+                                    <td>{e.id}</td>
+                                    <td>{e.username}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+
+
                 </>
             )
         }
