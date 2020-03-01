@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default class SchoolResults extends Component {
     constructor(props) {
@@ -22,10 +22,10 @@ export default class SchoolResults extends Component {
             .then(res => res.json())
             .then(result => {
                 console.log(result);
-                this.setState({isLoaded: true, data: result.resultsArray})
+                this.setState({ isLoaded: true, data: result.resultsArray })
             })
             .catch(err => console.log(err));
-        
+
     }
     render() {
         if (this.state.error) {
@@ -35,7 +35,7 @@ export default class SchoolResults extends Component {
         } else {
             return (
                 <>
-                    <Link to="/"><button>Back to menu</button></Link><br/>
+                    <Link to="/"><button>Back to menu</button></Link><br />
                     <h1>School results</h1>
                     <table>
                         <thead>
@@ -46,6 +46,7 @@ export default class SchoolResults extends Component {
                                 <th>Student username</th>
                                 <th>Score</th>
                                 <th>Date completed</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,10 +58,16 @@ export default class SchoolResults extends Component {
                                     <td>{e.studentUsername}</td>
                                     <td>{e.score}</td>
                                     <td>{e.date}</td>
+                                    <td><Link to={{
+                                        pathname: '/individualResults',
+                                        id: e.id
+                                    }}
+                                    >View details</Link>
+                                    </td>
                                 </tr>)}
                         </tbody>
                     </table>
-                    <br/>
+                    <br />
                 </>
             )
         }

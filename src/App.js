@@ -12,6 +12,7 @@ import AvailableExams from "./components/AvailableExams";
 import ResultExam from "./components/ResultExam";
 import CompletedExams from "./components/CompletedExams"
 import SchoolResults from "./components/SchoolResults";
+import IndividualResults from "./components/IndividualResults"
 
 
 export default class App extends React.Component {
@@ -142,7 +143,7 @@ export default class App extends React.Component {
             )}
           />
 
-        <Route
+          <Route
             path="/completedExams"
             exact
             render={routerProps => (
@@ -152,11 +153,21 @@ export default class App extends React.Component {
             )}
           />
 
-        <Route
+          <Route
             path="/schoolResults"
             exact
             render={routerProps => (
               <SchoolResults {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+              />
+            )}
+          />
+
+          <Route
+            path="/individualResults"
+            exact
+            render={routerProps => (
+              <IndividualResults {...routerProps}
                 domain={this.state.domain} user={this.state.user}
               />
             )}
