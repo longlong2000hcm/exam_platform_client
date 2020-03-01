@@ -38,6 +38,7 @@ export default class CompletedExams extends Component {
         } else {
             return (
                 <>
+                    <Link to="/"><button>Back to menu</button></Link><br/>
                     <h1>Completed Exams</h1>
                     <table>
                         <thead>
@@ -59,7 +60,6 @@ export default class CompletedExams extends Component {
                         </tbody>
                     </table>
                     <br/>
-                    <Link to="/"><button>Back to menu</button></Link>
                 </>
             )
         }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
 
 export default class CreateQuestion extends Component {
     constructor(props) {
@@ -65,6 +66,7 @@ export default class CreateQuestion extends Component {
     render() {
         return (
             <>
+                <Link to="/"><button>Back to menu</button></Link><br/>
                 <h2>Create a question</h2>
                 <form onSubmit={this.handleSubmit} >
                     <label>Category:</label>
@@ -92,7 +94,7 @@ export default class CreateQuestion extends Component {
                     </select>
                     <br />
                     <br/>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Create question" />
                     <br />
                 </form >
             </>

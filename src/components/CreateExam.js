@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
 
 export default class CreateExam extends Component {
     constructor(props) {
@@ -112,6 +113,7 @@ export default class CreateExam extends Component {
         } else {
             return (
                 <>
+                    <Link to="/"><button>Back to menu</button></Link><br/>
                     <h2>Create Exam</h2>
                     <form onSubmit={this.submitHandler}>
                         <div>Exam name: <input type="text" value={this.state.name} onChange={this.nameChangeHandler}></input></div>

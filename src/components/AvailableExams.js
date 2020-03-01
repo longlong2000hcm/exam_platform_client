@@ -46,6 +46,7 @@ export default class AvailableExams extends Component {
         } else {
             return (
                 <>
+                    <Link to="/"><button>Back to menu</button></Link><br/>
                     <h2>Pending Exams</h2>
                     <table>
                         <thead>
@@ -76,7 +77,6 @@ export default class AvailableExams extends Component {
                         </tbody>
                     </table>
                     <br/>
-                    <Link to="/"><button>Back to menu</button></Link>
                 </>
             )
         }
