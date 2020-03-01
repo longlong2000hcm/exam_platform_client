@@ -75,6 +75,8 @@ export default class AvailableExams extends Component {
                             )}
                         </tbody>
                     </table>
+                    <br/>
+                    <Link to="/"><button>Back to menu</button></Link>
                 </>
             )
         }

@@ -10,6 +10,7 @@ import StudentMenu from "./components/StudentMenu";
 import TakeExam from "./components/TakeExam";
 import AvailableExams from "./components/AvailableExams";
 import ResultExam from "./components/ResultExam";
+import CompletedExams from "./components/CompletedExams"
 
 
 export default class App extends React.Component {
@@ -135,6 +136,15 @@ export default class App extends React.Component {
             exact
             render={routerProps => (
               <ResultExam {...routerProps}
+                domain={this.state.domain} user={this.state.user}
+              />
+            )}
+          />
+        <Route
+            path="/completedExams"
+            exact
+            render={routerProps => (
+              <CompletedExams {...routerProps}
                 domain={this.state.domain} user={this.state.user}
               />
             )}
