@@ -48,22 +48,22 @@ export default class AvailableExams extends Component {
             return <h5>Loading...</h5>;
         } else {
             return (
-                <>
-                    <Link to="/"><button>Back to menu</button></Link><br/>
-                    <h2>Pending Exams</h2>
-                    <table>
+                <div className="container mt-4">
+                    <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br/>
+                    <h2 className="my-4">Pending Exams</h2>
+                    <table className="table">
                         <thead>
                             <tr>
-                                <th>Exam id</th>
-                                <th>Exam name</th>
-                                <th>Number of questions</th>
-                                <th></th>
+                                <th scope="col">Exam id</th>
+                                <th scope="col">Exam name</th>
+                                <th scope="col">Number of questions</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.pendingExams.map((item, index) =>
                                 <tr key={index}>
-                                    <td>{item.id}</td>
+                                    <th scope="col">{item.id}</th>
                                     <td>{item.name}</td>
                                     <td>{item.numberOfQuestions}</td>
                                     <td>
@@ -72,7 +72,7 @@ export default class AvailableExams extends Component {
                                             state: {
                                                 examId: item.id
                                             }
-                                        }}><button>Take</button>
+                                        }}><button className="btn btn-outline-primary">Take</button>
                                         </Link>
                                     </td>
                                 </tr>
@@ -80,7 +80,7 @@ export default class AvailableExams extends Component {
                         </tbody>
                     </table>
                     <br/>
-                </>
+                </div>
             )
         }
     }

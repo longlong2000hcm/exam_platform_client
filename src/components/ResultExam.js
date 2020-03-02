@@ -28,30 +28,30 @@ export default class ResultExam extends Component {
                 return <h5>Loading...</h5>;
             } else {
                 return (
-                    <>
-                        <h1>Exam result</h1>
+                    <div className="container mt-4">
+                        <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
+                        <h2>Exam result</h2>
                         <div>Score: <b>{this.props.location.result.score}</b></div>
                         <div>Submit time: {this.props.location.result.date}</div>
-                        <table>
+                        <table className="table">
                             <thead>
                                 <tr>
-                                    <th>Question No</th>
-                                    <th>Your answer</th>
-                                    <th>Correct answer</th>
+                                    <th scope="col">Question No</th>
+                                    <th scope="col">Your answer</th>
+                                    <th scope="col">Correct answer</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.props.location.result.studentAnswers.map((e, index) =>
                                     <tr>
-                                        <td>{index + 1}</td>
+                                        <th scope="col">{index + 1}</th>
                                         <td>{e.studentAnswerContent}</td>
                                         <td>{e.correctAnswerContent}</td>
                                     </tr>)}
                             </tbody>
                         </table>
                         <br />
-                        <Link to="/"><button>Back to menu</button></Link>
-                    </>
+                    </div>
                 )
             }
     }

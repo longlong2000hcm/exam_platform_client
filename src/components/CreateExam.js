@@ -127,58 +127,79 @@ export default class CreateExam extends Component {
     }
 
     render() {
-        if (this.props.user.role!=="teachers") {
+        if (this.props.user.role !== "teachers") {
             alert("Forbidden")
-            return <Redirect to="/"/>
+            return <Redirect to="/" />
         } else
-        if (this.state.error) {
-            return <div>Error happened</div>;
-        } else if (!this.state.isLoaded) {
-            return <h5>Loading...</h5>;
-        } else {
-            return (
-                <>
-                    <Link to="/"><button>Back to menu</button></Link><br />
-                    <h2>Create Exam</h2>
-                    <form onSubmit={this.submitHandler}>
-                        <div>Exam name: <input type="text" value={this.state.name} onChange={this.nameChangeHandler}></input></div>
-                        <hr />
-                        <div>Target: <input type="text" value={this.state.target} onChange={this.targetChangeHandler}></input></div>
-                        <small>Target can only be "all" or a student's id</small>
-                        <hr />
-                        {this.state.questionsArray.map((e, index) =>
-                            <div key={index}>
-                                <input
-                                    name={e.id}
-                                    type="checkbox"
-                                    checked={this.state.value[index]}
-                                    onChange={event => { this.toggleQuestionSelect(event, index) }}
-                                />
-                                <span>Category: {e.category} | Question: {e.question}</span>
+            if (this.state.error) {
+                return <div>Error happened</div>;
+            } else if (!this.state.isLoaded) {
+                return <h5>Loading...</h5>;
+            } else {
+                return (
+                    <div className="container mt-4">
+                        <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
+                        <h2>Create Exam</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="form-row">
+                                <div className="col-3">Exam name:</div>
+                                <input className="form-control col" type="text" value={this.state.name} onChange={this.nameChangeHandler}></input>
                             </div>
-                        )}
-                        <hr />
-                        <button type="submit">Create exam</button>
-                    </form>
-                    <br />
-                    <hr></hr>
-                    {this.state.studentList === null ? <button onClick={this.getStudentsList}>Get students list</button> : null}
-                    <table>
-                        <thead>
-                            {this.state.studentList === null ? null : <tr><th>Student id</th><th>Student username</th></tr>}
-                        </thead>
-                        <tbody>
-                            {this.state.studentList === null ? null : this.state.studentList.map((e, index) =>
-                                <tr key={index}>
-                                    <td>{e.id}</td>
-                                    <td>{e.username}</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </>
-            )
-        }
+                            <div className="form-row">
+                                <div className="col-3">Target:</div>
+                                <input className="form-control col" type="text" value={this.state.target} onChange={this.targetChangeHandler}></input>
+                            </div>
+                            <small>Target can only be "all" or a student's id</small>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Question</th>
+                                    </tr>
+                                </thead>
+                                {this.state.questionsArray.map((e, index) =>
+                                    <tr key={index}>
+                                        <td>
+                                            <input
+                                                name={e.id}
+                                                type="checkbox"
+                                                checked={this.state.value[index]}
+                                                onChange={event => { this.toggleQuestionSelect(event, index) }}
+                                            />
+                                        </td>
+                                        <td>{e.category}</td>
+                                        <td>{e.question}</td>
+                                    </tr>
+
+                                )}
+                            </table>
+                            <button className="btn btn-primary" type="submit">Create exam</button>
+                        </form>
+                        <br />
+                        <hr></hr>
+                        {this.state.studentList === null ? <button className="btn btn-outline-secondary" onClick={this.getStudentsList}>Get students list</button> : null}
+                        <table className="table">
+                            <thead>
+                                {this.state.studentList === null ? null :
+                                    <tr>
+                                        <th scope="col">Student id</th>
+                                        <th scope="col">Student username</th>
+                                    </tr>
+                                }
+                            </thead>
+                            <tbody>
+                                {this.state.studentList === null ? null : this.state.studentList.map((e, index) =>
+                                    <tr key={index}>
+                                        <td>{e.id}</td>
+                                        <td>{e.username}</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )
+            }
 
     }
 }

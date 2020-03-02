@@ -38,31 +38,31 @@ export default class SchoolResults extends Component {
                 return <Redirect to="/" />
             } else
                 return (
-                    <>
-                        <Link to="/"><button>Back to menu</button></Link><br />
-                        <h1>School results</h1>
-                        <table>
+                    <div className="container mt-4">
+                        <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
+                        <h2>School results</h2>
+                        <table className="table">
                             <thead>
                                 <tr>
-                                    <th>Result id</th>
-                                    <th>Exam id</th>
-                                    <th>Student id</th>
-                                    <th>Student username</th>
-                                    <th>Score</th>
-                                    <th>Date completed</th>
-                                    <th></th>
+                                    <th scope="col">Result id</th>
+                                    <th scope="col">Exam id</th>
+                                    <th scope="col">Student id</th>
+                                    <th scope="col">Student username</th>
+                                    <th scope="col">Score</th>
+                                    <th scope="col">Date completed</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.state.data.map((e, index) =>
                                     <tr key={index}>
-                                        <td>{e.id}</td>
+                                        <th scope="col">{e.id}</th>
                                         <td>{e.examId}</td>
                                         <td>{e.studentId}</td>
                                         <td>{e.studentUsername}</td>
                                         <td>{e.score}</td>
                                         <td>{e.date}</td>
-                                        <td><Link to={{
+                                        <td><Link className="btn btn-link" to={{
                                             pathname: '/individualResults',
                                             id: e.id
                                         }}
@@ -72,7 +72,7 @@ export default class SchoolResults extends Component {
                             </tbody>
                         </table>
                         <br />
-                    </>
+                    </div>
                 )
         }
     }

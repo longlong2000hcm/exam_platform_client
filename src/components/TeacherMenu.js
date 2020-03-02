@@ -9,18 +9,34 @@ export default class TeacherMenu extends Component {
         };
     }
     render() {
-        if (this.props.user.role !== "students") {
+        if (this.props.user.role !== "teachers") {
             alert("Forbidden")
             return <Redirect to="/" />
         } else {
             return (
-                <>
+                <div className="container mt-4">
                     <h2>Teacher's menu</h2>
-                    <Link to="/createQuestions"><button>Create questions</button></Link><br />
-                    <Link to="/createExams"><button>Create exams</button></Link><br />
-                    <Link to="/createExamsWithCategory"><button>Create exams with category</button></Link><br />
-                    <Link to="/schoolResults"><button>School results</button></Link><br />
-                </>
+                    <div className="mt-3">
+                        <Link to="/createQuestions">
+                            <button className="btn btn-outline-success">Create questions</button>
+                        </Link>
+                    </div>
+                    <div className="mt-3">
+                        <Link to="/createExams">
+                            <button className="btn btn-outline-success">Create exams</button>
+                        </Link>
+                    </div>
+                    <div className="mt-3">
+                        <Link to="/createExamsWithCategory">
+                            <button className="btn btn-outline-primary">Create exams with category</button>
+                        </Link>
+                    </div>
+                    <div className="mt-3">
+                        <Link to="/schoolResults">
+                            <button className="btn btn-outline-warning">School results</button>
+                        </Link>
+                    </div>
+                </div>
             )
         }
 

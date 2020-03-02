@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 export default class TakeExam extends Component {
     constructor(props) {
@@ -102,17 +102,17 @@ export default class TakeExam extends Component {
             }
             else {
                 return (
-                    <>
-                        <h1>Exam id: {this.state.examId}</h1>
+                    <div className="container mt-4">
+                        <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
+                        <h2>Exam id: {this.state.examId}</h2>
                         <form onSubmit={this.handleSubmit} ref={this.state.form}>
                             {
                                 this.state.questionList.map((item, index) =>
-                                    <div key={index}>
+                                    <div className="ml-4" key={index}>
                                         <h3>{item.question}</h3>
                                         {item.answerOptions.map((answer, i) =>
-                                            <div key={i}>
+                                            <div className="ml-4" key={i}>
                                                 <input type="radio" name={item.questionId}
-
                                                     onChange={event => { this.handleRadioChange(event, item.questionId, answer.answerNo) }} />
                                                 {answer.answer}
                                             </div>
@@ -120,9 +120,9 @@ export default class TakeExam extends Component {
                                     </div>
                                 )
                             }
-                            <input type="submit" value="Submit exam"></input>
+                            <input className="btn btn-primary" type="submit" value="Submit exam"></input>
                         </form>
-                    </>
+                    </div>
                 )
             }
     }

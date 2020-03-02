@@ -72,39 +72,46 @@ export default class CreateQuestion extends Component {
             return <Redirect to="/" />
         } else {
             return (
-                <>
-                    <Link to="/"><button>Back to menu</button></Link><br />
+                <div className="container mt-4">
+                    <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
                     <h2>Create a question</h2>
                     <form onSubmit={this.handleSubmit} >
-                        <label>Category:</label>
-                        <input type="text" value={this.state.category} onChange={this.categoryChangeHandler} />
-                        <br />
-                        <label>Question:</label>
-                        <input type="text" value={this.state.question} onChange={this.questionChangeHandler} />
-                        <br />
-                        <br />
-                        {this.state.answerOptions.map((option, index) =>
-                            <div key={index}>
-                                <span >Answer {this.state.answerOptions[index].answerNo}:</span>
-                                <input type="text"
-                                    name={"answerNo" + this.state.answerOptions[index].answerNo}
-                                    value={this.state.answerOptions[index].answer}
-                                    onChange={this.answerChangeHandler} />
+                        <div className="form-group">
+                            <label>Category:</label>
+                            <input type="text" className="form-control" placeholder="Category" value={this.state.category} onChange={this.categoryChangeHandler} />
+                        </div>
+                        <div className="form-group">
+                            <label>Question:</label>
+                            <input type="text" className="form-control" placeholder="Question" value={this.state.question} onChange={this.questionChangeHandler} />
+                        </div>
+                        <table className="table">
+                            {this.state.answerOptions.map((option, index) =>
+                                <tr key={index}>
+                                    <td >Answer {this.state.answerOptions[index].answerNo}:</td>
+                                    <td><input type="text"
+                                        name={"answerNo" + this.state.answerOptions[index].answerNo}
+                                        value={this.state.answerOptions[index].answer}
+                                        onChange={this.answerChangeHandler} /></td>
+
+                                </tr>
+                            )}
+                        </table>
+                        <button className="btn btn-secondary" onClick={this.addAnswer}>+</button><br />
+                        <div className="form-row">
+                            <div className="col-3">Correct answer: Answer &nbsp;</div>
+                            <div className="col-3">
+                                <select class="form-control" defaultValue={this.state.answerOptions[0].answerNo} onChange={this.props.roleChangeHandler}>
+                                    {this.state.answerOptions.map((option, index) => (
+                                        <option value={option.answerNo} key={index}>{option.answerNo}</option>
+                                    ))}
+                                </select>
                             </div>
-                        )}
-                        <button onClick={this.addAnswer}>+</button><br />
-                        <span>Correct answer: Answer &nbsp;</span>
-                        <select defaultValue={this.state.answerOptions[0].answerNo} onChange={this.props.roleChangeHandler}>
-                            {this.state.answerOptions.map((option, index) => (
-                                <option value={option.answerNo} key={index}>{option.answerNo}</option>
-                            ))}
-                        </select>
+                        </div>
                         <br />
-                        <br />
-                        <input type="submit" value="Create question" />
+                        <input className="btn btn-primary" type="submit" value="Create question" />
                         <br />
                     </form >
-                </>
+                </div>
             )
         }
     }

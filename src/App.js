@@ -16,19 +16,16 @@ import IndividualResults from "./components/IndividualResults"
 import CreateExamWithCategory from "./components/CreateExamWithCategory"
 
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      domain: "http://localhost:4000",
+      domain: "https://powerful-dusk-96983.herokuapp.com",
+      //domain: "http://localhost:4000",
       user: {
         userId: null,
         role: "",
         token: "",
-        //token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInBhc3N3b3JkIjoiJDJiJDA0JEI5RUJaSlRIWTJjVEIua083d0tySE80MkFrN2VGRi5JY3FRSjZtU1lHZ3c0TXQwM0RxU1ZPIiwiaWF0IjoxNTgyOTg3MzMzLCJleHAiOjE1ODM1OTIxMzN9.weRw48MYC9WXIb9zmTGA58Qi2lP3r4_gJ9CUxA90Rjw",
-        // userId: 4,
-        // role: "students",
-        // token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwid…UzNX0.cHMQHhu1On4yE8g5IUqT8R_fPjlun_QaGe-_9RlCOuw",
         examTaking: null
       },
       landingPage: routerProps => (
@@ -78,6 +75,7 @@ export default class App extends React.Component {
     this.setState({ ...this.state.user, examTaking: examId })
     return <Redirect to="/takeExam"></Redirect>
   }
+  
   render() {
     return (
       <>
@@ -196,3 +194,5 @@ export default class App extends React.Component {
     )
   }
 }
+
+export default App;

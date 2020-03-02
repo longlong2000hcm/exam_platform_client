@@ -41,22 +41,22 @@ export default class CompletedExams extends Component {
                 return <h5>Loading...</h5>;
             } else {
                 return (
-                    <>
-                        <Link to="/"><button>Back to menu</button></Link><br />
-                        <h1>Completed Exams</h1>
-                        <table>
+                    <div className="container mt-4">
+                        <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
+                        <h2 className="my-4">Completed Exams</h2>
+                        <table className="table">
                             <thead>
                                 <tr>
-                                    <th>Result id</th>
-                                    <th>Exam id</th>
-                                    <th>Score</th>
-                                    <th>Date completed</th>
+                                    <th scope="col">Result id</th>
+                                    <th scope="col">Exam id</th>
+                                    <th scope="col">Score</th>
+                                    <th scope="col">Date completed</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.state.data.map((e, index) =>
                                     <tr key={index}>
-                                        <td>{e.id}</td>
+                                        <th scope="col">{e.id}</th>
                                         <td>{e.examId}</td>
                                         <td>{e.score}</td>
                                         <td>{e.date}</td>
@@ -64,7 +64,7 @@ export default class CompletedExams extends Component {
                             </tbody>
                         </table>
                         <br />
-                    </>
+                    </div>
                 )
             }
     }

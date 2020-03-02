@@ -30,7 +30,8 @@ export default class createExamWithCategory extends Component {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        questionCategories: result.rows
+                        questionCategories: result.rows,
+                        category: result.rows[0]
                     });
                     console.log(result.rows)
                 },
@@ -60,7 +61,6 @@ export default class createExamWithCategory extends Component {
         if (examObject.name.length > 0
             && examObject.target.length > 0
             && (examObject.target === "all" || typeof parseInt(examObject.target) === "number")
-            && examObject.category.length > 0
             && examObject.numberOfQuestions > 0) {
             await fetch(`${this.props.domain}/teachers/createExamWithCategory`, {
                 method: 'POST',
@@ -82,7 +82,7 @@ export default class createExamWithCategory extends Component {
                             category: "",
                             numberOfQuestions: 0,
                         })
-                    } else if (result.code===0 && result.err==="Number of questions selected is greater than number of questions in the database") {
+                    } else if (result.code === 0 && result.err === "Number of questions selected is greater than number of questions in the database") {
                         alert(result.err);
                     }
                     else {
@@ -118,54 +118,65 @@ export default class createExamWithCategory extends Component {
     }
 
     render() {
-        if (this.props.user.role!=="teachers") {
+        if (this.props.user.role !== "teachers") {
             alert("Forbidden")
-            return <Redirect to="/"/>
+            return <Redirect to="/" />
         } else
-        if (this.state.error) {
-            return <div>Error happened</div>;
-        } else if (!this.state.isLoaded) {
-            return <h5>Loading...</h5>;
-        } else {
-            return (
-                <>
-                    <Link to="/"><button>Back to menu</button></Link><br />
-                    <h2>Create Exam with category</h2>
-                    <form onSubmit={this.submitHandler}>
-                        <div>Exam name: <input type="text" name="name" value={this.state.name} onChange={this.inputChangeHandler}></input></div>
-                        <hr />
-                        <div>Category:
-                        <select name="category" defaultValue={this.state.questionCategories[0]} value={this.state.category} onChange={this.inputChangeHandler}>
-                                {this.state.questionCategories.map((e, index) => <option value={e} key={index}>{e}</option>)}
-                            </select>
-                        </div>
-                        <hr />
-                        <div>Number of questions: <input type="number" name="numberOfQuestions" value={this.state.numberOfQuestions} onChange={this.inputChangeHandler}></input></div>
-                        <hr />
-                        <div>Target: <input type="text" name="target" value={this.state.target} onChange={this.inputChangeHandler}></input></div>
-                        <small>Target can only be "all" or a student's id</small>
-                        <hr />
-                        <button type="submit">Create exam</button>
-                    </form>
-                    <br />
-                    <hr></hr>
-                    {this.state.studentList === null ? <button onClick={this.getStudentsList}>Get students list</button> : null}
-                    <table>
-                        <thead>
-                            {this.state.studentList === null ? null : <tr><th>Student id</th><th>Student username</th></tr>}
-                        </thead>
-                        <tbody>
-                            {this.state.studentList === null ? null : this.state.studentList.map((e, index) =>
-                                <tr key={index}>
-                                    <td>{e.id}</td>
-                                    <td>{e.username}</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </>
-            )
-        }
+            if (this.state.error) {
+                return <div>Error happened</div>;
+            } else if (!this.state.isLoaded) {
+                return <h5>Loading...</h5>;
+            } else {
+                return (
+                    <div className="container mt-4">
+                        <Link to="/"><button className="btn btn-outline-secondary">Back to menu</button></Link><br />
+                        <h2 className="my-2">Create Exam with category</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="form-row">
+                                <div className="col-3">Exam name:</div>
+                                <input className="form-control col" type="text" name="name" value={this.state.name} onChange={this.inputChangeHandler}></input>
+                            </div>
+                            <div className="form-row">
+                                <div className="col-3">Category:</div>
+                                <select className="form-control col-3" name="category" defaultValue={this.state.questionCategories[0]} value={this.state.category} onChange={this.inputChangeHandler}>
+                                    {this.state.questionCategories.map((e, index) => <option value={e} key={index}>{e}</option>)}
+                                </select>
+                            </div>
+                            <div className="form-row">
+                                <div className="col-3">Number of questions: </div>
+                                <input className="form-control col" type="number" name="numberOfQuestions" value={this.state.numberOfQuestions} onChange={this.inputChangeHandler}></input>
+                            </div>
+                            <div className="form-row">
+                                <div className="col-3">Target:</div>
+                                <input className="form-control col" type="text" name="target" value={this.state.target} onChange={this.inputChangeHandler}></input>
+                            </div>
+                            <small>Target can only be "all" or a student's id</small>
+                            <div className="mt-2"><button className="btn btn-primary" type="submit">Create exam</button></div>
+                        </form>
+                        <br />
+                        <hr></hr>
+                        {this.state.studentList === null ? <button className="btn btn-outline-secondary" onClick={this.getStudentsList}>Get students list</button> : null}
+                        <table className="table">
+                            <thead>
+                                {this.state.studentList === null ? null :
+                                    <tr>
+                                        <th scope="col">Student id</th>
+                                        <th scope="col">Student username</th>
+                                    </tr>
+                                }
+                            </thead>
+                            <tbody>
+                                {this.state.studentList === null ? null : this.state.studentList.map((e, index) =>
+                                    <tr key={index}>
+                                        <td>{e.id}</td>
+                                        <td>{e.username}</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )
+            }
 
     }
 }
